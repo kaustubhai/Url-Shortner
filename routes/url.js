@@ -21,22 +21,29 @@ Router.post('/shorten', async (req, res) => {
     // Create URL Code
     const urlCode = shortId.generate();
 
+    var regex = new RegExp (`https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}`)
+
     // Check long url
-    try {
-        let url = await Url.findOne({longUrl})
-        if (url)
-            return res.json(url)
-        const shortUrl = baseUrl + '/' + urlCode
-        url = new Url({
-            longUrl, 
-            shortUrl,
-            urlCode
-        })
-        await url.save()
-        res.json(url)
-    }   
-    catch (err) {
-        console.log(err)
+    if(regex.test(longUrl)){
+        try {
+            let url = await Url.findOne({longUrl})
+            if (url)
+                return res.json(url)
+            const shortUrl = baseUrl + '/' + urlCode
+            url = new Url({
+                longUrl, 
+                shortUrl,
+                urlCode
+            })
+            await url.save()
+            res.json(url)
+        }   
+        catch (err) {
+            console.log(err)
+        }
+    }
+    else {
+        res.status(401).send('Invalid URL entered')
     }
 })
 
