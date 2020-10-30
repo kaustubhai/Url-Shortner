@@ -39,6 +39,7 @@ Router.post('/shorten', async (req, res) => {
             res.json(url)
         }   
         catch (err) {
+            res.status(500).send('Server Error')
             console.log(err)
         }
     }

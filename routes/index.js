@@ -13,7 +13,7 @@ Router.get('/:code', async (req, res) => {
         if (longUrl) {
             return res.redirect(longUrl.longUrl)
         }
-        res.status(404).send('Invalid URL')
+        res.status(404).json('Invalid URL')
     }
     catch (e) {
         console.log(e)
