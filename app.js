@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const app = express()
 const PORT = process.env.PORT || 3000
+app.use(express.json({extended: false}))
 
 mongoose.connect("mongodb://localhost/urlShortner", {
     useUnifiedTopology: true, useNewUrlParser: true
@@ -10,10 +11,9 @@ mongoose.connect("mongodb://localhost/urlShortner", {
 
 app.set('view engine', 'ejs')
 
-app.use(express.json({extended: false}))
-
 app.use('/', require('./routes/index'))
-app.use('/api/url', (req, res) => require('./routes/url'))
+app.use('/api/url',require('./routes/url'))
 
 
 app.listen(PORT, () => console.log("Server is live on", PORT))
+
